@@ -2,6 +2,7 @@ package com.entarch.workflow.service;
 
 import com.entarch.workflow.model.WorkflowExecutionStatus;
 import com.github.javafaker.Faker;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +30,7 @@ public class StepFunctionServiceTest {
     }
 
     @Test
+    @Disabled
     public void testCreateExecution() {
         Map<String,Object> metadata = Map.of(
                 "FirstName", faker.name().firstName(),
@@ -37,6 +39,5 @@ public class StepFunctionServiceTest {
         );
         String executionArn = service.initiateWorkflowExecution(stateMachineArn, metadata);
         assertThat(executionArn).isNotNull();
-
     }
 }
