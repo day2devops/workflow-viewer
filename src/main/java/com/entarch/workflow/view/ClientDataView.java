@@ -46,7 +46,8 @@ public class ClientDataView extends VerticalLayout {
             String email = event.getItem().get().getEmail();
             StepFunctionsService stepFunctionsService = ServiceFunction.get(StepFunctionsService.class);
             String executionArn = stepFunctionsService.initiateWorkflowExecution(stateMachineArn,
-                    Map.of("email", event.getItem().get().getEmail()));
+                    Map.of("email", event.getItem().get().getEmail(),
+                            "owner", "mishimaltd@gmail.com"));
             ClientDataService clientDataService = ServiceFunction.get(ClientDataService.class);
             clientDataService.setClientDataOwnerAndType(email,"mishimaltd@gmail.com", "OnBoarding");
             clientDataService.setExecutionArn(email, executionArn);
@@ -56,6 +57,7 @@ public class ClientDataView extends VerticalLayout {
             String email = event.getItem().get().getEmail();
             ClientDataService service = ServiceFunction.get(ClientDataService.class);
             service.setClientDataOwnerAndType(email,"None", "Prospect");
+            service.setExecutionArn(email, "None");
             UI.getCurrent().getPage().reload();
         });
 

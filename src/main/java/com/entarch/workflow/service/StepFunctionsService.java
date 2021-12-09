@@ -11,10 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import static com.entarch.workflow.functions.DateFunction.fromDate;
 
@@ -25,8 +28,13 @@ public class StepFunctionsService {
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    private final Map<String,WorkflowExecutionStatus> cache = new HashMap<>();
+
+    private static final String stateMachineArn = "arn:aws:states:us-east-2:440917644520:stateMachine:EACustomerOnboarding";
+
     @Autowired
     private AWSStepFunctions client;
+
 
     /**
      * Initiates a workflow execution
@@ -38,6 +46,10 @@ public class StepFunctionsService {
         return result.getExecutionArn();
     }
 
+    public void sendTaskSuccess(String token) {
+        SendTaskSuccessRequest request = new SendTaskSuccessRequest().withTaskToken(token);
+        client.sendTaskSuccess(request);
+    }
 
     /**
      * Returns workflow executions for state machine
@@ -54,8 +66,11 @@ public class StepFunctionsService {
         ListExecutionsResult result = client.listExecutions(new ListExecutionsRequest()
                 .withStateMachineArn(stateMachineArn));
 
+        // Only process uncached or running processes
+        List<ExecutionListItem> toProcess = result.getExecutions().stream().filter(item ->
+                cache.get(item.getExecutionArn()) == null || "RUNNING".equals(item.getStatus())).collect(Collectors.toList());
 
-        result.getExecutions().forEach(item -> {
+        toProcess.forEach(item -> {
             GetExecutionHistoryRequest request = new GetExecutionHistoryRequest()
                     .withExecutionArn(item.getExecutionArn())
                     .withReverseOrder(true);
@@ -73,11 +88,13 @@ public class StepFunctionsService {
                                             .build()
                                     ))));
         });
+
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-        executionStatusList.sort((wes1, wes2) -> wes2.getStartTime()
-                .compareTo(wes1.getStartTime()));
+        executionStatusList.forEach(workflowExecutionStatus ->
+                cache.put(workflowExecutionStatus.getExecutionArn(), workflowExecutionStatus));
+
         logger.info("Finished getting execution history for state machine ARN {}", stateMachineArn);
-        return executionStatusList;
+        return cache.values().stream().toList();
     }
 
 

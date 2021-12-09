@@ -55,7 +55,7 @@ public class ClientDataService {
         return scanResult.getItems().stream().map(this::build).collect(Collectors.toList());
     }
 
-    public List getClientDataByOwner(String owner) {
+    public List<ClientData> getClientDataByOwner(String owner) {
         return getAllClientData().stream().filter(clientData ->
                 owner.equals(clientData.getOwner()))
                 .collect(Collectors.toList());

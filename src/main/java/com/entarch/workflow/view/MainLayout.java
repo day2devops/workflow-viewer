@@ -39,8 +39,11 @@ public class MainLayout extends AppLayout {
         RouterLink workflowLink = new RouterLink("Workflow", WorkflowView.class);
         workflowLink.setHighlightCondition(HighlightConditions.sameLocation());
 
+        RouterLink tasksLink = new RouterLink("Tasks", WorkflowTaskView.class);
+        tasksLink.setHighlightCondition(HighlightConditions.sameLocation());
+
         addToDrawer(new VerticalLayout(
-                prospectLink, workflowLink
+                prospectLink, workflowLink, tasksLink
         ));
     }
 }
