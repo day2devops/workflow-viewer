@@ -25,8 +25,11 @@ dependencies {
 	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
 	implementation 'com.amazonaws:aws-java-sdk-stepfunctions'
 
+	implementation 'com.google.code.gson:gson:2.8.9'
+
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'com.github.javafaker:javafaker:1.0.2'
 }
 
 dependencyManagement {

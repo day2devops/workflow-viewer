@@ -1,11 +1,10 @@
 package com.entarch.workflow.service;
 
 import com.amazonaws.services.stepfunctions.AWSStepFunctions;
-import com.amazonaws.services.stepfunctions.model.GetExecutionHistoryRequest;
-import com.amazonaws.services.stepfunctions.model.GetExecutionHistoryResult;
-import com.amazonaws.services.stepfunctions.model.ListExecutionsRequest;
-import com.amazonaws.services.stepfunctions.model.ListExecutionsResult;
+import com.amazonaws.services.stepfunctions.model.*;
 import com.entarch.workflow.model.WorkflowExecutionStatus;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +12,31 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+
+import static com.entarch.workflow.functions.DateFunction.fromDate;
 
 @Configuration
 public class StepFunctionsService {
 
-    final Logger logger = LoggerFactory.getLogger(StepFunctionsService.class);
+    private static final Logger logger = LoggerFactory.getLogger(StepFunctionsService.class);
+
+    private final Gson gson = new GsonBuilder().create();
 
     @Autowired
     private AWSStepFunctions client;
+
+    /**
+     * Initiates a workflow execution
+     */
+    public String initiateWorkflowExecution(String stateMachineArn, Map<String,Object> metadata) {
+        StartExecutionResult result = client.startExecution(new StartExecutionRequest()
+                .withStateMachineArn(stateMachineArn)
+                .withInput(gson.toJson(metadata)));
+        return result.getExecutionArn();
+    }
+
 
     /**
      * Returns workflow executions for state machine
@@ -47,10 +62,17 @@ public class StepFunctionsService {
                             .ifPresent(historyEvent -> executionStatusList.add(
                                     new WorkflowExecutionStatus(item.getExecutionArn(),
                                             item.getStatus(),
-                                            historyEvent.getStateEnteredEventDetails().getName())))));
+                                            historyEvent.getStateEnteredEventDetails().getName(),
+                                            fromDate(item.getStartDate()),
+                                            fromDate(item.getStopDate()),
+                                            fromDate(historyEvent.getTimestamp())
+                                    )))));
         });
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         return executionStatusList;
     }
+
+
+
 
 }
