@@ -27,7 +27,7 @@ pipeline {
     stage('Build') {
       steps {
         script {
-          sh("./gradlew build -x test --no-daemon")
+          sh("./gradlew build sonarqube --no-daemon")
         }
       }
     }
