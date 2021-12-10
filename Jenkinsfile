@@ -28,7 +28,7 @@ pipeline {
       steps {
         script {
           withSonarQubeEnv("EA Sonar") {
-            sh("./gradlew build sonarqube --no-daemon")
+            sh("./gradlew build sonarqube jacocoTestReport --no-daemon")
           }
         }
       }
