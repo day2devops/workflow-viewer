@@ -10,6 +10,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H4;
@@ -51,8 +52,11 @@ public class WorkflowTaskView extends VerticalLayout {
                     button.setText("Mark Done");
                     button.addClickListener((ComponentEventListener<ClickEvent<Button>>) event -> {
                         String token = workflowTask.getToken();
-                        ServiceFunction.get(StepFunctionsService.class).sendTaskSuccess(token);
-                        ServiceFunction.get(WorkflowTaskService.class).updateWorkflowTaskStatus(token, "Complete");
+                        String uuid = workflowTask.getUuid();
+                        String email = workflowTask.getClient();
+                        String owner = workflowTask.getEmail();
+                        ServiceFunction.get(WorkflowTaskService.class).updateWorkflowTaskStatus(uuid, "Complete");
+                        ServiceFunction.get(StepFunctionsService.class).sendTaskSuccess(token, uuid, email, owner);
                         UI.getCurrent().getPage().reload();
                     });
                 }

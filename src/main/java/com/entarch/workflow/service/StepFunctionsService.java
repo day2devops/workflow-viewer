@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,9 +27,8 @@ public class StepFunctionsService {
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    private final Map<String,String> statusCache = new HashMap<>();
     private final Map<String,WorkflowExecutionStatus> cache = new HashMap<>();
-
-    private static final String stateMachineArn = "arn:aws:states:us-east-2:440917644520:stateMachine:EACustomerOnboarding";
 
     @Autowired
     private AWSStepFunctions client;
@@ -46,8 +44,15 @@ public class StepFunctionsService {
         return result.getExecutionArn();
     }
 
-    public void sendTaskSuccess(String token) {
-        SendTaskSuccessRequest request = new SendTaskSuccessRequest().withTaskToken(token);
+    public void sendTaskSuccess(String token, String uuid, String email, String owner) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("uuid", uuid);
+        map.put("email", email);
+        map.put("owner", owner);
+        map.put("approved", "2");
+        String output = gson.toJson(map);
+        SendTaskSuccessRequest request = new SendTaskSuccessRequest().withTaskToken(token)
+                .withOutput(output);
         client.sendTaskSuccess(request);
     }
 
@@ -67,8 +72,18 @@ public class StepFunctionsService {
                 .withStateMachineArn(stateMachineArn));
 
         // Only process uncached or running processes
-        List<ExecutionListItem> toProcess = result.getExecutions().stream().filter(item ->
-                cache.get(item.getExecutionArn()) == null || "RUNNING".equals(item.getStatus())).collect(Collectors.toList());
+        List<ExecutionListItem> toProcess = result.getExecutions().stream().filter(item -> {
+            String status = statusCache.get(item.getExecutionArn());
+            if( status == null) {
+                return true;
+            } else {
+                if("RUNNING".equals(item.getStatus())) {
+                    return true;
+                } else {
+                    return !status.equals(item.getStatus());
+                }
+            }
+        }).collect(Collectors.toList());
 
         toProcess.forEach(item -> {
             GetExecutionHistoryRequest request = new GetExecutionHistoryRequest()
@@ -90,8 +105,10 @@ public class StepFunctionsService {
         });
 
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-        executionStatusList.forEach(workflowExecutionStatus ->
-                cache.put(workflowExecutionStatus.getExecutionArn(), workflowExecutionStatus));
+        executionStatusList.forEach(workflowExecutionStatus -> {
+            cache.put(workflowExecutionStatus.getExecutionArn(), workflowExecutionStatus);
+            statusCache.put(workflowExecutionStatus.getExecutionArn(), workflowExecutionStatus.getStatus());
+        });
 
         logger.info("Finished getting execution history for state machine ARN {}", stateMachineArn);
         return cache.values().stream().toList();

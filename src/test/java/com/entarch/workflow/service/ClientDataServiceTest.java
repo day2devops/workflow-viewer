@@ -67,7 +67,7 @@ public class ClientDataServiceTest {
     @Test
     @Disabled("Run manually")
     public void testBulkAddClientData() {
-        int count = 15;
+        int count = 20;
         for(int i = 0; i < count; i++ ) {
             String email = faker.bothify("????##@gmail.com");
             service.createClientData(buildClientData(email));

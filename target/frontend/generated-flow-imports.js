@@ -87,3 +87,4 @@ import '@vaadin/flow-frontend/dndConnector.js';
 import '@vaadin/flow-frontend/gridConnector.js';
 import '@vaadin/flow-frontend/ironListConnector.js';
 import '@vaadin/flow-frontend/selectConnector.js';
+import 'Frontend/script/confetti.js';

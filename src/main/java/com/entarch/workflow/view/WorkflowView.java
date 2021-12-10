@@ -6,7 +6,9 @@ import com.entarch.workflow.model.ClientWorkflowStatus;
 import com.entarch.workflow.model.WorkflowExecutionStatus;
 import com.entarch.workflow.service.ClientDataService;
 import com.entarch.workflow.service.StepFunctionsService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
@@ -25,6 +27,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Route(value = "/workflow", layout = MainLayout.class)
+@JavaScript("./script/confetti.js")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 @PageTitle("Pipeline | Prospect Conversion Tracker")
@@ -32,7 +35,7 @@ public class WorkflowView extends VerticalLayout {
 
     private static final String owner = "mishimaltd@gmail.com";
 
-    private static final String stateMachineArn = "arn:aws:states:us-east-2:440917644520:stateMachine:EACustomerOnboarding";
+    private static final String stateMachineArn = "arn:aws:states:us-east-2:440917644520:stateMachine:CustomerOnboardingV2";
 
     private final Grid<ClientWorkflowStatus> grid = new Grid<>(ClientWorkflowStatus.class, false);
 

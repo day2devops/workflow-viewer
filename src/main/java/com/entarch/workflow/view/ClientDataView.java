@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @PageTitle("Prospects | Prospect Conversion Tracker")
 public class ClientDataView extends VerticalLayout {
 
-    private static final String stateMachineArn = "arn:aws:states:us-east-2:440917644520:stateMachine:EACustomerOnboarding";
+    private static final String stateMachineArn = "arn:aws:states:us-east-2:440917644520:stateMachine:CustomerOnboardingV2";
 
     private final Grid<ClientWorkflowData> grid = new Grid<>(ClientWorkflowData.class, false);
 

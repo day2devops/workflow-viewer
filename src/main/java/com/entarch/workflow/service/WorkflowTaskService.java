@@ -3,6 +3,8 @@ package com.entarch.workflow.service;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.entarch.workflow.model.WorkflowTask;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 public class WorkflowTaskService {
 
     private static final String tableName = "WorkflowTasks";
+
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Autowired
     private AmazonDynamoDB dynamoDB;

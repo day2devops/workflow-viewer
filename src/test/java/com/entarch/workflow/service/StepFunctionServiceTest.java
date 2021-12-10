@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class StepFunctionServiceTest {
 
-    private static final String stateMachineArn = "arn:aws:states:us-east-2:440917644520:stateMachine:EACustomerOnboarding";
+    private static final String stateMachineArn = "arn:aws:states:us-east-2:440917644520:stateMachine:CustomerOnboardingV2";
 
     private final Faker faker = new Faker(new Random());
 
@@ -30,10 +30,10 @@ public class StepFunctionServiceTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     public void testSendTaskSuccess() {
-        String token = "AAAAKgAAAAIAAAAAAAAAAjWfYxL3lSutWifHY7d2XaHf8sAXsFnX97YICPRBCAtQfC79LNEM4bq9wVjP0yN7ULZF86JWDt3aznXOZtQ9tmqo4LuJzkpe4qwHesNmGEErvSN1vUXgZb6S2WmiwpAHbo4bMTFVNc1r1OPQKIUKbFvzFDkPLillZYEvsozmoMH19Wou8kph6csq+chyFAl1EvinoCf3vUCMHd4fgyQOrH/W9EzWw6oltnLoIm72VQ82HLXQRLiUqljSLLzptNXtkIvFwKOljg7CLHpOAD+p0BY3sguLEtOnjCz8gBLoCSUfXYhssJYqFKms75IHVi+I21dRKTsPuCIhkKDm2iwowRsSRQLbEkxqduV9zK/NBSEko5B+6/XGLJC3+kGYrQvO3F4zZq74PfQOMp9fC16fENLc4z1qV1XsjRNXQkfOaaobjXkqiljdQjJy/uJLWalJxVkqNuFbiQg/RUdbr2OEvml+yGFMmemgBxxunDBT2xHoxExsGtcZ9dkkWE167vysJm6cOj55g2zz2jdrrtN4UhpJ/J9VzfUDO+UMc7jOzoI3bWE1/39bGISpN8gEYmoXcHYxn1HTsi4L5x2CXGgf79OsSzc8VrqD3R66yBmHc+YM";
-        service.sendTaskSuccess(token);
+        String token = "AAAAKgAAAAIAAAAAAAAAAtTKsuQAR4jKLE+kJUleuRojfPW6c/WFmsCIlxmoHMOo2rJ3+kz+BZhQ9B7ar0a2E61ONbz2cKq2VfaP1yg3AmVYelR/TxtEwfVmt+k/kP7bisRm4MiI5V4MMOlmqDlNuIHHAi99LzGx9GdwwoMVfvE9f1gFLSoeJD1uNwS3EL7RZ+Z2GxUKpygJUm7+fUOi0AFWFsITvxM8+FABBrBQ76SdwHYfYoNx/aDoe+SMijP2UnVK8c+TunFJ8E8Vz4zk+Gd3fAUiXnX/BP2WH5orbPFprg+7mkcbzSIRin/tl0Zo2gIKlQiCfnC/ls8V8F2Zr4mB68qayVO65wvXC918eJuASSWs7UJwHP/3aH2vvA6bwOYNdG3MAUV6wv7OhZ/3Mn4K9rt/QKIW4QhtesEdhDEBxfoQU5VnJ6hsmzxu0bMELeFwUqG5Czlva2E436Hah28nwmK4iAcaFpDBCTLmo3E8HWEyzGIZNISRXVkwermEKfvSktbjA6lObholCOzEG7xVzuJEZqkbeOG/X2TtTRIE8QZKTu91X1Qrn+4rvV5/u1+ar9xYDPlMDpjkGzXw4V+8+3esh2vBCMi5uQyWEbLznjoGVORiy9L8NR3hIW+R";
+        //service.sendTaskSuccess(token);
 
     }
 
