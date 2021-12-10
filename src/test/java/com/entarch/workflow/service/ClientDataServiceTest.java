@@ -4,6 +4,7 @@ import com.entarch.workflow.model.ClientData;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -20,6 +21,7 @@ public class ClientDataServiceTest {
 
     private final Faker faker = new Faker(new Random());
 
+    @EnabledIfEnvironmentVariable(named = "AWS_ACCESS_KEY_ID", matches=".*")
     @Test
     public void testRoundTrip() {
         String email = faker.bothify("????##@gmail.com");
@@ -37,6 +39,7 @@ public class ClientDataServiceTest {
         assertThat(service.getClientData(email)).isEmpty();
     }
 
+    @EnabledIfEnvironmentVariable(named = "AWS_ACCESS_KEY_ID", matches=".*")
     @Test
     public void testUpdateOwnerAndType() {
         String email = faker.bothify("????##@gmail.com");
@@ -52,6 +55,7 @@ public class ClientDataServiceTest {
         service.deleteClientData(email);
     }
 
+    @EnabledIfEnvironmentVariable(named = "AWS_ACCESS_KEY_ID", matches=".*")
     @Test
     public void testSetExecutionArn() {
         String email = faker.bothify("????##@gmail.com");
