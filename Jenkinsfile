@@ -27,7 +27,7 @@ pipeline {
     stage('Build') {
       steps {
         script {
-          sh("./gradlew build -x test")
+          sh("./gradlew build -x test --no-daemon")
         }
       }
     }
