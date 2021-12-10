@@ -27,7 +27,9 @@ pipeline {
     stage('Build') {
       steps {
         script {
-          sh("./gradlew build sonarqube --no-daemon")
+          withSonarQubeEnv("EA Sonar") {
+            sh("./gradlew build sonarqube --no-daemon")
+          }
         }
       }
     }
