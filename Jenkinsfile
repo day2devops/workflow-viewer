@@ -19,6 +19,11 @@ pipeline {
         }
       }
     }
+    stage('Checkout from GitHub') {
+      steps {
+        checkout scm
+      }
+    }
     stage('Build') {
       steps {
         script {
