@@ -6,6 +6,8 @@ import com.entarch.workflow.model.ClientWorkflowStatus;
 import com.entarch.workflow.model.WorkflowExecutionStatus;
 import com.entarch.workflow.service.ClientDataService;
 import com.entarch.workflow.service.StepFunctionsService;
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JavaScript;
@@ -29,6 +31,7 @@ import java.util.stream.Collectors;
 @Route(value = "/workflow", layout = MainLayout.class)
 @JavaScript("./script/confetti.js")
 @CssImport("./styles/shared-styles.css")
+@CssImport("./styles/pyro.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 @PageTitle("Pipeline | Prospect Conversion Tracker")
 public class WorkflowView extends VerticalLayout {
@@ -131,6 +134,24 @@ public class WorkflowView extends VerticalLayout {
 
     private static VerticalLayout createStatus(String title, long count, String color) {
         VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout.addClickListener(new ComponentEventListener<ClickEvent<VerticalLayout>>() {
+            @Override
+            public void onComponentEvent(ClickEvent<VerticalLayout> event) {
+                Div container = new Div();
+                container.setClassName("fireworks");
+                Div div = new Div();
+                div.setClassName("pyro");
+                Div before = new Div();
+                before.setClassName("before");
+                Div after = new Div();
+                after.setClassName("after");
+                div.add(before, after);
+                container.add(div);
+                event.getSource().add(container);
+                event.getSource().add(container);
+                event.getSource().add(container);
+            }
+        });
         verticalLayout.setHeight("150px");
         verticalLayout.setWidth("150px");
         verticalLayout.setClassName("dashboard-component");

@@ -11,6 +11,8 @@ import $css_0 from 'Frontend/styles/shared-styles.css';
 addCssBlock(`<custom-style><style>${$css_0}</style></custom-style>`);
 import $css_1 from 'Frontend/styles/vaadin-text-field-styles.css';
 addCssBlock(`<dom-module id="flow_css_mod_1" theme-for="vaadin-text-field"><template><style>${$css_1}</style></template></dom-module>`);
+import $css_2 from 'Frontend/styles/pyro.css';
+addCssBlock(`<custom-style><style>${$css_2}</style></custom-style>`);
 
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-list/iron-list.js';
