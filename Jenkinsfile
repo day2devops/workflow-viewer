@@ -20,8 +20,10 @@ pipeline {
       }
     }
     stage('Build') {
-      script {
-        sh("./gradlew build -x test")
+      steps {
+        script {
+          sh("./gradlew build -x test")
+        {
       }
     }
   }
