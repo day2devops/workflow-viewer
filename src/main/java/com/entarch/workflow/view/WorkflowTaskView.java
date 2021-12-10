@@ -12,6 +12,9 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -24,16 +27,17 @@ import com.vaadin.flow.router.Route;
 @JsModule("@vaadin/vaadin-lumo-styles/badge.js")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
-@PageTitle("Tasks | Workflow")
+@PageTitle("Dashboard | Prospect Conversion Tracker")
 public class WorkflowTaskView extends VerticalLayout {
 
-    private final Grid<WorkflowTask> grid = new Grid<>(WorkflowTask.class, false);
+    private final Grid<WorkflowTask> openTaskGrid = new Grid<>(WorkflowTask.class, false);
+    private final Grid<WorkflowTask> closedTaskGrid = new Grid<>(WorkflowTask.class, false);
 
     public WorkflowTaskView() {
-        grid.addColumn("client").setAutoWidth(true);
-        grid.addColumn("task").setAutoWidth(true);
-        grid.addColumn("status").setAutoWidth(true);
-        grid.addComponentColumn((ValueProvider<WorkflowTask, Component>) workflowTask -> {
+        openTaskGrid.addColumn("client").setAutoWidth(true);
+        openTaskGrid.addColumn("task").setAutoWidth(true);
+        openTaskGrid.addColumn("status").setAutoWidth(true);
+        openTaskGrid.addComponentColumn((ValueProvider<WorkflowTask, Component>) workflowTask -> {
             if("Open".equals(workflowTask.getStatus())) {
                 Button button = new Button();
                 button.setText("Mark Done");
@@ -59,15 +63,28 @@ public class WorkflowTaskView extends VerticalLayout {
             }
         });
 
-        add(grid);
+        add(new H3("Outstanding Tasks"));
+
+        add(openTaskGrid);
+
+        closedTaskGrid.addColumn("client").setAutoWidth(true);
+        closedTaskGrid.addColumn("task").setAutoWidth(true);
+        closedTaskGrid.addColumn("status").setAutoWidth(true);
+
+        add(new H3("Completed Tasks"));
+
+        add(closedTaskGrid);
+
         setSizeFull();
         updateList();
     }
 
     public void updateList() {
         WorkflowTaskService service = ServiceFunction.get(WorkflowTaskService.class);
-        //grid.setItems(service.getWorkflowTasksByOwner("mishimaltd@gmail.com"));
-        grid.setItems(service.getAllWorkflowTasks());
+        openTaskGrid.setItems(service.getAllWorkflowTasks().stream()
+                .filter(workflowTask -> "Open".equals(workflowTask.getStatus())));
+        closedTaskGrid.setItems(service.getAllWorkflowTasks().stream()
+                .filter(workflowTask -> !"Open".equals(workflowTask.getStatus())));
     }
 
 }

@@ -15,3 +15,72 @@ a[highlight] {
     text-decoration: underline;
 }
 
+.light-blue {
+    background-color: #4287f5;
+}
+
+h1 {
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.v-grid-header th {
+  background-color: #AAAAAA;
+  color: #FFFFFF;
+}
+
+a {
+    font-weight: 400;
+}
+
+.v-grid-cell.green {
+    color: blue;
+}
+
+.v-grid-cell.yellow {
+    color: yellow;
+}
+
+.v-grid-cell.blue {
+    color: blue;
+}
+
+.SUCCESS {
+    color: green;
+}
+
+.FAILED {
+    color: red;
+}
+
+.RUNNING {
+    color: blue;
+}
+
+.background-gray {
+    background-color: #F6F6F6;
+}
+
+.dashboard-green {
+    background-color: #2b8744;
+}
+
+.dashboard-blue {
+    background-color: #174896;
+}
+
+.dashboard-orange {
+    background-color: #e0863d;
+}
+
+.dashboard-number {
+    font-weight: 600;
+    color: #FFFFFF;
+    font-size: 72px;
+}
+
+.dashboard-title {
+    font-weight: 400;
+    color: #FFFFFF;
+    font-size: 14px;
+}
