@@ -23,7 +23,7 @@ pipeline {
       steps {
         script {
           sh("./gradlew build -x test")
-        {
+        }
       }
     }
   }
