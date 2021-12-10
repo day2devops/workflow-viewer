@@ -4,6 +4,7 @@ import com.entarch.workflow.model.WorkflowExecutionStatus;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -23,6 +24,7 @@ public class StepFunctionServiceTest {
     @Autowired
     private StepFunctionsService service;
 
+    @EnabledIfEnvironmentVariable(named = "AWS_ACCESS_KEY_ID", matches=".*")
     @Test
     public void testGetExecutionHistory() {
         List<WorkflowExecutionStatus> executions = service.getWorkflowStatus(stateMachineArn);

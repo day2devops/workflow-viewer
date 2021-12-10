@@ -4,6 +4,7 @@ import com.entarch.workflow.model.WorkflowTask;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -20,6 +21,7 @@ public class WorkflowTaskServiceTest {
 
     private final Faker faker = new Faker(new Random());
 
+    @EnabledIfEnvironmentVariable(named = "AWS_ACCESS_KEY_ID", matches=".*")
     @Test
     //@Disabled("Run manually")
     public void testBulkAddTasks() {
@@ -30,6 +32,7 @@ public class WorkflowTaskServiceTest {
         }
     }
 
+    @EnabledIfEnvironmentVariable(named = "AWS_ACCESS_KEY_ID", matches=".*")
     @Test
     public void testGetWorkflowTasks() {
         assertThat(service.getAllWorkflowTasks()).isNotEmpty();
