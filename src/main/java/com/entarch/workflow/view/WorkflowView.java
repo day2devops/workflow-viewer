@@ -2,7 +2,6 @@ package com.entarch.workflow.view;
 
 import com.entarch.workflow.functions.ServiceFunction;
 import com.entarch.workflow.model.ClientData;
-import com.entarch.workflow.model.ClientWorkflowData;
 import com.entarch.workflow.model.ClientWorkflowStatus;
 import com.entarch.workflow.model.WorkflowExecutionStatus;
 import com.entarch.workflow.service.ClientDataService;
@@ -13,7 +12,6 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.data.renderer.Renderer;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.router.PageTitle;
@@ -24,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Route(value = "/workflow", layout = MainLayout.class)
@@ -43,8 +40,8 @@ public class WorkflowView extends VerticalLayout {
 
         add(createDashboard());
 
-        grid.addColumn(createClientRenderer()).setHeader("Prospect").setAutoWidth(true).setFlexGrow(0);
-        grid.addColumn("currentStepName").setHeader("Prospect Stage");
+        grid.addColumn(createClientRenderer()).setHeader("Prospect").setAutoWidth(true).setFlexGrow(0).setSortable(true);
+        grid.addColumn("currentStepName").setHeader("Prospect Stage").setSortable(true);
         grid.addColumn((ValueProvider<ClientWorkflowStatus, String>)
                 clientWorkflowStatus -> clientWorkflowStatus.getStartTime()
                         .format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm"))).setHeader("Started")
@@ -53,7 +50,7 @@ public class WorkflowView extends VerticalLayout {
                 clientWorkflowStatus -> clientWorkflowStatus.getCurrentStepEnteredTime()
                         .format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm"))).setHeader("Last Activity")
                 .setSortable(true);
-        grid.addColumn(createStatusRenderer()).setHeader("Workflow Status").setAutoWidth(true).setFlexGrow(0);
+        grid.addColumn(createStatusRenderer()).setHeader("Workflow Status").setAutoWidth(true).setFlexGrow(0).setSortable(true);
         add(grid);
         setSizeFull();
         grid.setItems(getStatusList());

@@ -43,11 +43,11 @@ public class ClientDataView extends VerticalLayout {
 
     public ClientDataView() {
 
-        grid.addColumn(createClientRenderer()).setHeader("Prospect").setAutoWidth(true).setFlexGrow(0);
-        grid.addColumn(createPipelineRenderer()).setHeader("Pipeline Stage").setAutoWidth(true).setFlexGrow(0);
-        grid.addColumn(createPipelineStatusRenderer()).setHeader("Pipeline Status").setAutoWidth(true).setFlexGrow(0);
-        grid.addColumn("type").setHeader("Client Type").setAutoWidth(true).setFlexGrow(0);
-        grid.addColumn("owner").setAutoWidth(true).setHeader("Pipeline Owner");
+        grid.addColumn(createClientRenderer()).setHeader("Prospect").setAutoWidth(true).setFlexGrow(0).setSortable(true);
+        grid.addColumn(createPipelineRenderer()).setHeader("Pipeline Stage").setAutoWidth(true).setFlexGrow(0).setSortable(true);
+        grid.addColumn(createPipelineStatusRenderer()).setHeader("Pipeline Status").setAutoWidth(true).setFlexGrow(0).setSortable(true);
+        grid.addColumn("type").setHeader("Client Type").setAutoWidth(true).setFlexGrow(0).setSortable(true);
+        grid.addColumn("owner").setAutoWidth(true).setHeader("Pipeline Owner").setSortable(true);
 
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
 

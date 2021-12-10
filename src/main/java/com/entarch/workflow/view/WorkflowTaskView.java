@@ -12,9 +12,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -34,15 +32,15 @@ public class WorkflowTaskView extends VerticalLayout {
     private final Grid<WorkflowTask> closedTaskGrid = new Grid<>(WorkflowTask.class, false);
 
     public WorkflowTaskView() {
-        openTaskGrid.addColumn("client").setAutoWidth(true);
-        openTaskGrid.addColumn("task").setAutoWidth(true);
-        openTaskGrid.addColumn("status").setAutoWidth(true);
+        openTaskGrid.addColumn("client").setAutoWidth(true).setSortable(true);
+        openTaskGrid.addColumn("task").setAutoWidth(true).setSortable(true);
+        openTaskGrid.addColumn("status").setAutoWidth(true).setSortable(true);
         openTaskGrid.addComponentColumn((ValueProvider<WorkflowTask, Component>) workflowTask -> {
             if("Open".equals(workflowTask.getStatus())) {
                 Button button = new Button();
-                button.setText("Mark Done");
                 button.setIcon(new Icon(VaadinIcon.CHECK_CIRCLE));
-                if(workflowTask.getTask().equals("DocuSign")) {
+                if(workflowTask.getTask().equals("Awaiting Customer Signature")) {
+                    button.setText("Sign Documents");
                     button.addClickListener((ComponentEventListener<ClickEvent<Button>>) event -> {
                         String uuid = workflowTask.getUuid();
                         String redirectUri = "http://localhost:8080/eg001?uuid=" + uuid;
@@ -50,6 +48,7 @@ public class WorkflowTaskView extends VerticalLayout {
                         UI.getCurrent().getPage().setLocation(redirectUri);
                     });
                 } else {
+                    button.setText("Mark Done");
                     button.addClickListener((ComponentEventListener<ClickEvent<Button>>) event -> {
                         String token = workflowTask.getToken();
                         ServiceFunction.get(StepFunctionsService.class).sendTaskSuccess(token);
@@ -63,7 +62,7 @@ public class WorkflowTaskView extends VerticalLayout {
             }
         });
 
-        add(new H3("Outstanding Tasks"));
+        add(new H4("Outstanding Tasks"));
 
         add(openTaskGrid);
 
@@ -71,7 +70,7 @@ public class WorkflowTaskView extends VerticalLayout {
         closedTaskGrid.addColumn("task").setAutoWidth(true);
         closedTaskGrid.addColumn("status").setAutoWidth(true);
 
-        add(new H3("Completed Tasks"));
+        add(new H4("Completed Tasks"));
 
         add(closedTaskGrid);
 
